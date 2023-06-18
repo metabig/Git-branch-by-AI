@@ -5,10 +5,10 @@ const initCohere = () => {
    * @returns {void}
    */
 
-  cohere.init("qOkmXiX6y4N3LdDas8GTr3BMVshYOfyDeYt4L3y4");
+  cohere.init(process.env.REACT_APP_COHERE_API_KEY);
 };
 
-export const getBranchName = async (id, description) => {
+export const getBranchName = async ({id, description}) => {
   /**
    * @param {string} id - The ticket id.
    * @param {string} description - The ticket description.
@@ -16,7 +16,7 @@ export const getBranchName = async (id, description) => {
    * @returns {string} - The branch name.
    */
 
-  const PROMPT = `
+  const branch_name_prompt = `
     Development git flow. The result is a git branch name.
     Create a slug from the "Ticket title". Join words by underscore.
     Start with the ticket id.
@@ -42,7 +42,7 @@ export const getBranchName = async (id, description) => {
 
   const branch_name = await cohere
     .generate({
-      prompt: PROMPT,
+      prompt: branch_name_prompt,
       model: "command",
       max_tokens: 300,
       temperature: 0.9,
